@@ -68,7 +68,20 @@ class _WebviewpageState extends State<Webviewpage> {
         .navbar .active,
         .navbar .active:focus,
         .navbar li:hover > a,
-        .navbar .dropdown ul a:hover {
+        .navbar .dropdown ul a:hover,
+        .contact .info h4,
+        .contact .info h4 a,
+        .contact .info p,
+        .contact .info p a,
+        .contact .info span,
+        .contact .info strong,
+        .contact .info .email p,
+        .contact .info .phone p,
+        .contact .info .address p,
+        .contact .info .hours p,
+        .contact .info .hours strong,
+        .faq .faq-list .icon-show,
+        .faq .faq-list .icon-close {
           color: #ad1207 !important;
         }
 
@@ -78,6 +91,20 @@ class _WebviewpageState extends State<Webviewpage> {
         .bg-secondary,
         .btn-theme,
         .back-to-top,
+        .back-to-top i,
+        .back-to-top svg,
+        .scroll-top,
+        .scroll-top i,
+        .scroll-top svg,
+        #scroll-top,
+        #scroll-top i,
+        #scroll-top svg,
+        .go-top,
+        .go-top i,
+        .go-top svg,
+        .goTop,
+        .goTop i,
+        .goTop svg,
         .section-title h2::before,
         .section-title h2::after,
         .active > .page-link,
@@ -100,6 +127,20 @@ class _WebviewpageState extends State<Webviewpage> {
         .btn-secondary:hover,
         .btn-theme:hover,
         .back-to-top:hover,
+        .back-to-top:hover i,
+        .back-to-top:hover svg,
+        .scroll-top:hover,
+        .scroll-top:hover i,
+        .scroll-top:hover svg,
+        #scroll-top:hover,
+        #scroll-top:hover i,
+        #scroll-top:hover svg,
+        .go-top:hover,
+        .go-top:hover i,
+        .go-top:hover svg,
+        .goTop:hover,
+        .goTop:hover i,
+        .goTop:hover svg,
         .services .icon-box:hover {
           background: #86140e !important;
           border-color: #86140e !important;
@@ -121,10 +162,29 @@ class _WebviewpageState extends State<Webviewpage> {
         .fa-plus,
         .fa-plus-circle,
         .fa-plus-square,
+        [class*="fa-plus"],
         .bi-plus,
         .bi-plus-circle,
-        .bi-plus-lg {
+        .bi-plus-lg,
+        [class*="bi-plus"],
+        .accordion-button::after,
+        .faq .faq-list i {
           color: #ad1207 !important;
+        }
+
+        .back-to-top i,
+        .back-to-top svg,
+        .scroll-top i,
+        .scroll-top svg,
+        #scroll-top i,
+        #scroll-top svg,
+        .go-top i,
+        .go-top svg,
+        .goTop i,
+        .goTop svg {
+          color: #ffffff !important;
+          fill: #ffffff !important;
+          stroke: #ffffff !important;
         }
 
         .fixed-area-menu::-webkit-scrollbar-thumb,
@@ -174,6 +234,46 @@ class _WebviewpageState extends State<Webviewpage> {
 
         .gallery .gallery-item {
           border-color: #ffffff !important;
+        }
+      `;
+      document.head.appendChild(style);
+    })();
+  ''';
+
+  static const String _footerThemeJavascript = '''
+    (() => {
+      if (document.getElementById('app-footer-theme')) {
+        return;
+      }
+
+      const style = document.createElement('style');
+      style.id = 'app-footer-theme';
+      style.textContent = `
+        footer .copyright,
+        footer .copyright *,
+        footer .credits,
+        footer .credits *,
+        footer a,
+        footer span,
+        footer p,
+        footer small,
+        #footer .copyright,
+        #footer .copyright *,
+        #footer .credits,
+        #footer .credits *,
+        #footer a,
+        #footer span,
+        #footer p,
+        #footer small,
+        footer .text-warning,
+        #footer .text-warning,
+        footer [style*="#EE9C1F"],
+        footer [style*="#ee9c1f"],
+        footer [style*="yellow"],
+        #footer [style*="#EE9C1F"],
+        #footer [style*="#ee9c1f"],
+        #footer [style*="yellow"] {
+          color: #ad1207 !important;
         }
       `;
       document.head.appendChild(style);
@@ -359,8 +459,12 @@ class _WebviewpageState extends State<Webviewpage> {
 
   Future<void> _applyPageSpecificTheme() async {
     final String key = widget.title.toLowerCase().trim();
-    if (!key.contains('donation')) {
-      return;
+
+    try {
+      await _webController.runJavaScript(_footerThemeJavascript);
+    } catch (error, stackTrace) {
+      debugPrint('Footer theme injection failed: $error');
+      debugPrintStack(stackTrace: stackTrace);
     }
 
     try {
